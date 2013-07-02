@@ -18,7 +18,7 @@ collected-static/
 nohup.out
 project/settings/hosts/localhost.py
 *.css
-project/static/img/sprites/icons-*.png# Numerous always-ignore extensions
+project/static/img/sprites/icons-*.png
 *.diff
 *.err
 *.orig
@@ -30,6 +30,7 @@ project/static/img/sprites/icons-*.png# Numerous always-ignore extensions
 *~
 *.sass-cache
 *.psd
+
 
 # OS or Editor folders
 .DS_Store

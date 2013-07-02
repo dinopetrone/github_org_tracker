@@ -69,10 +69,7 @@ FIXTURE_DIRS = ()
 
 # A tuple of strings designating all the enabled applications
 INSTALLED_APPS = (
-    'grappelli',
     
-    'django.contrib.admin',
-    'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.humanize',
@@ -81,12 +78,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'require',
-    #'debug-toolbar',
     'gunicorn',
-    'tastypie',
-    'djcelery',
     'south',
-    
     'utils',
     
 )

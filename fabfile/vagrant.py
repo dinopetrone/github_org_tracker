@@ -29,10 +29,8 @@ if remote_readme != local_readme:
 @task
 def runall():
     local('touch nohup.out')
-    local('nohup fab vagrant.celery &')
-    local('nohup fab vagrant.celerybeat &')
     local('nohup fab vagrant.css_watch &')
-    local('nohup fab vagrant.runserver &')
+    local('nohup fab vagrant.gunicorn &')
     local('tail -f nohup.out')
 
 @task
