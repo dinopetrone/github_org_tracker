@@ -31,13 +31,17 @@ class IndexView(View):
 
 
         if access_token and organization and days:
-            gh = GithubService(access_token, organization, days)
+            logger.debug('vars already set to %s, %s, %s', access_token, organization, days)
+            try:
+                gh = GithubService(access_token, organization, days)
+            except:
+                request.session.flush()
+                return redirect(request.path)
             context['access_token'] = access_token
             context['organization'] = organization
             context['days'] = days
             context['users'] = json.dumps(gh.users)
-            if gh.users:
-                return HttpResponse(json.dumps(gh.users), mimetype="application/json")
+            return HttpResponse(json.dumps(gh.users), mimetype="application/json")
         elif code:
             self.github_authorize(request, code)
             return redirect(request.path)

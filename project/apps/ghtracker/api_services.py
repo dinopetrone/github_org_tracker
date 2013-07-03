@@ -13,6 +13,8 @@ API_ROOT = 'https://api.github.com'
 AUTH_URL = 'https://github.com/login/oauth/authorize'
 ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token'
 
+class GithubException(Exception):
+    pass
 
 class GithubService(object):
 
@@ -42,6 +44,8 @@ class GithubService(object):
         logger.debug("[organization repos] %s", url)
         repos = self.get_api_content(url, context).json()
         if type(repos) is dict:
+            logger.error('[github issues] %s', repos.get('message'))
+            raise GithubException(repos.get('message'))
             print(repos.get('message'))
             return
         
@@ -103,12 +107,12 @@ class GithubService(object):
         day = date.strftime('%D')
         
         self.users.setdefault(author,{})
-        self.users[author].setdefault(day,{'commit_count':0,'changes':0,'commits':[]})
+        self.users[author].setdefault(day,{'commit_count':0,'changes':0})
         
         lines = self.get_total_chars_changed(commit['url'])
         self.users[author][day]['commit_count'] += 1
         self.users[author][day]['changes'] += lines
-        self.users[author][day]['commits'].append(commit['url'])
+        #self.users[author][day]['commits'].append(commit['url'])
         
         
     def get_total_chars_changed(self, url):
