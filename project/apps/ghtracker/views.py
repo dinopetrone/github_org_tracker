@@ -15,10 +15,7 @@ logger = logging.getLogger(__name__)
 class IndexView(View):
     def get(self, request):
         form = OrgForm()
-        context = {
-                'form':form,
-            }
-
+        context = {'form':form}
         code = request.GET.get('code',False)
         access_token = request.session.get('access_token',False)
         organization = request.session.get('organization',False)
