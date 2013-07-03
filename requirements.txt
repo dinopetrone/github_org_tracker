@@ -9,9 +9,7 @@ distribute==0.6.48
 dj-database-url==0.2.1
 django-debug-toolbar==0.9.4
 django-extensions==1.1.1
-django-grappelli==2.4.5
 django-require==1.0.3
-django-tastypie==0.9.15
 docutils==0.10
 -e git://github.com/surfly/gevent.git@454a77ca561868854760b2d9cbfa3bf3bbd2e062#egg=gevent-dev
 greenlet==0.4.1
