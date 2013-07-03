@@ -158,7 +158,7 @@ class GithubService(object):
 
 
 
-def github_authorize( request, code):
+def github_authorize(code):
     context = {
         'client_id':CLIENT_ID,
         'client_secret':CLIENT_SECRET,
@@ -167,16 +167,17 @@ def github_authorize( request, code):
     resp = requests.post(ACCESS_TOKEN_URL, params=context)
     query = parse_qs(resp.text)
     try:
-        request.session['access_token'] = query['access_token'][0]
+        return query['access_token'][0]
     except:
         logger.error('uhm...crap :)')
+        raise
     
     
     
 
-def get_github_auth_url(request):
+def get_github_auth_url(redirect_uri):
     context = {
-        'redirect_uri':request.build_absolute_uri(request.path),
+        'redirect_uri':redirect_uri,
         'response_type':'code',
         'scope':'repo,private_repo',
         'client_id': CLIENT_ID

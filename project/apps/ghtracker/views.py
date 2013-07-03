@@ -33,7 +33,7 @@ class IndexView(View):
                 request.session.flush()
                 return redirect(request.path)
         elif code:
-            github_authorize(request, code)
+            request.session['access_token'] = github_authorize(code)
             return redirect(request.path)
         
         return render(self.request, 'index.html', context)
@@ -43,7 +43,7 @@ class IndexView(View):
         if form.is_valid():
             request.session['organization'] = form.cleaned_data['organization']
             request.session['days'] = form.cleaned_data['days']
-            gh_url = get_github_auth_url(request)
+            gh_url = get_github_auth_url(request.build_absolute_uri(request.path))
             return redirect(gh_url)
         
         context = {'form':form}
