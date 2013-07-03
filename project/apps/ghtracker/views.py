@@ -1,11 +1,12 @@
 import requests
 import json
+import logging
 from django.views.generic import View
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import OrgForm
 from .api_services import GithubService, github_authorize, get_github_auth_url
-import logging
+
 
 
 logger = logging.getLogger(__name__)

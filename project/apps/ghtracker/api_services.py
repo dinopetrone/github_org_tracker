@@ -1,13 +1,16 @@
 import os
+import json
+import logging
+from datetime import datetime
 from urlparse import urlparse, parse_qs
 import gevent
 from gevent import monkey
 monkey.patch_all()
-import json
-import requests
-from datetime import datetime
 from django.core.cache import cache
-import logging
+import requests
+
+
+
 
 
 logger = logging.getLogger(__name__)
