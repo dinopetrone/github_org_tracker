@@ -23,24 +23,14 @@ class IndexView(View):
         organization = request.session.get('organization',False)
         days = request.session.get('days',False)
 
-
-
         if access_token and organization and days:
             logger.debug('vars already set to %s, %s, %s', access_token, organization, days)
             try:
-                gh = GithubService(access_token, organization, days)
+                gh = GithubService()
+                context.update(gh.user_data(access_token, organization, days))
             except:
                 request.session.flush()
                 return redirect(request.path)
-            context['access_token'] = access_token
-            context['organization'] = organization
-            context['days'] = days
-            context['users'] = gh.users
-            all_days = set()
-            for user in gh.users:
-                days = gh.users[user]
-                map(all_days.add,days)
-            context['all_days'] = sorted(all_days)
         elif code:
             github_authorize(request, code)
             return redirect(request.path)
@@ -52,9 +42,9 @@ class IndexView(View):
         if form.is_valid():
             request.session['organization'] = form.cleaned_data['organization']
             request.session['days'] = form.cleaned_data['days']
+            gh_url = get_github_auth_url(request)
+            return redirect(gh_url)
         
-        gh_url = get_github_auth_url(request)
-        return redirect(gh_url)
         context = {'form':form}
         return render(self.request, 'index.html', context)
 

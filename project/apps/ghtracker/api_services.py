@@ -24,16 +24,34 @@ class GithubException(Exception):
 
 class GithubService(object):
 
-    def __init__(self, token, organization, days):
+    def user_data(self, token, organization, days):
+        
         self.token = token
         self.organization = organization
         self.days = days
         self.users = {}
+        response = {}
+        response['access_token'] = token
+        response['organization'] = organization
+        response['days'] = days
+        
         if cache.get(token):
             self.users = cache.get(token)
-            return
-        self.get_private_repos()
-        cache.set(token,self.users,6000)
+        else:
+            self.get_private_repos()
+            cache.set(token,self.users,6000)
+        
+        response['all_days'] = self.get_all_days()
+        response['users'] = self.users
+        return response
+
+    def get_all_days(self):
+        all_days = set()
+        for user in self.users:
+            days = self.users[user]
+            map(all_days.add,days)
+        return sorted(all_days)
+
 
     def get_api_content(self, url, context={}):
         context['access_token'] = self.token
