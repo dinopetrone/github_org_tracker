@@ -81,6 +81,7 @@ INSTALLED_APPS = (
     'gunicorn',
     'south',
     'utils',
+    'apps.ghtracker',
     
 )
 

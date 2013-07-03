@@ -1,11 +1,37 @@
 {% extends 'base.html' %}
 {% load require %}
-
+{% load object_extras %}
 
 {% block content %}
     
     {% if users %}
-        {{ users }}
+    
+
+    <table id="for-chart">
+            <tfoot>
+                <tr>
+                    <td>&nbsp;</td>
+                    {% for day in all_days %}
+                    <th>{{day}}</th>
+                    {% endfor %}
+                </tr>
+            </tfoot>
+            <tbody>
+                {% for user, days in users.items %}
+                <tr>
+                    <th scope="row">{{user}}</th>
+                    
+                    {% for day in all_days %}
+                    
+                    <td>{{days|key:day}}</td>
+                    
+                    {% endfor %}
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div id="chart"></div>
     {% elif access_token and organization and days %}
         {{access_token}} and {{organization}} and {{days}}
     {% else %}
@@ -15,6 +41,11 @@
             <button>submit</button>
         </form>       
     {% endif %}
+    <div >
+
+
+
+</div>
 
 {% endblock %}
 

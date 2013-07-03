@@ -16,15 +16,7 @@ exec_sass_watch   = "compass watch {} -c {}"
 #exec_sass_compile = "compass compile {} --output-style compressed -c {} --force"
 exec_sass_compile = "compass compile {} -c {} --trace --force"
 
-# Check if current VM belongs to this project
-with hide('everything'):
-    root_dir = path.abspath(path.join(path.dirname(__file__), '..'))
-    readme_filename = path.join(root_dir, 'README.md')
-    local_readme  = local("md5 %s | awk '{ print $4 }'" % (readme_filename,), capture=True)
-    remote_readme = local("vagrant ssh -c 'md5sum /var/www/README.md' | awk '{ print $1 }'", capture=True)
 
-if remote_readme != local_readme:
-    abort('Different VM running')
 
 @task
 def runall():

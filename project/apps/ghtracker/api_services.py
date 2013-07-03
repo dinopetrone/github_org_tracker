@@ -4,6 +4,7 @@ monkey.patch_all()
 import json
 import requests
 from datetime import datetime
+from django.core.cache import cache
 import logging
 
 
@@ -23,8 +24,11 @@ class GithubService(object):
         self.organization = organization
         self.days = days
         self.users = {}
-        #print(token, organization, days)
+        if cache.get(token):
+            self.users = cache.get(token)
+            return
         self.get_private_repos()
+        cache.set(token,self.users,6000)
 
     def get_api_content(self, url, context={}):
         context['access_token'] = self.token

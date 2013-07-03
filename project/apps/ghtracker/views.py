@@ -40,11 +40,19 @@ class IndexView(View):
             context['access_token'] = access_token
             context['organization'] = organization
             context['days'] = days
-            context['users'] = json.dumps(gh.users)
-            return HttpResponse(json.dumps(gh.users), mimetype="application/json")
+            context['users'] = gh.users
+            all_days = set()
+            for user in gh.users:
+                days = gh.users[user]
+                for day in days:
+                    all_days.add(day)
+                    
+                    #context['all_days']
+            #return HttpResponse(json.dumps(gh.users), mimetype="application/json")
         elif code:
             self.github_authorize(request, code)
             return redirect(request.path)
+        context['all_days'] = sorted(all_days)
         return render(self.request, 'index.html', context)
 
     def post(self, request):
