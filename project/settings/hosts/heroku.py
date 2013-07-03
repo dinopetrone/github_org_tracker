@@ -2,14 +2,10 @@ from settings import *
 import dj_database_url
 import sys
 
-DEBUG = False
-
-print >> sys.stderr, "Using Heroku Settings"
-
+DEBUG = os.environ.get('DEBUG', False)
 
 DATABASES = {
     'default': dj_database_url.config(default='postgres://localhost'),
 }
 
-# this setting can be removed after setting up a static file serve through a cdn
-SERVE_STATIC = True
+SERVE_STATIC = os.environ.get('SERVE_STATIC', True)
