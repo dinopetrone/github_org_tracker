@@ -1,3 +1,5 @@
+import os
+from urlparse import urlparse, parse_qs
 import gevent
 from gevent import monkey
 monkey.patch_all()
@@ -13,6 +15,9 @@ logger = logging.getLogger(__name__)
 API_ROOT = 'https://api.github.com'
 AUTH_URL = 'https://github.com/login/oauth/authorize'
 ACCESS_TOKEN_URL = 'https://github.com/login/oauth/access_token'
+
+CLIENT_ID = os.environ.get('CLIENT_ID')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 class GithubException(Exception):
     pass
@@ -127,3 +132,34 @@ class GithubService(object):
         for f in files:
             total += f['changes']
         return total
+
+
+
+
+
+def github_authorize( request, code):
+    context = {
+        'client_id':CLIENT_ID,
+        'client_secret':CLIENT_SECRET,
+        'code':code,
+    }
+    resp = requests.post(ACCESS_TOKEN_URL, params=context)
+    query = parse_qs(resp.text)
+    try:
+        request.session['access_token'] = query['access_token'][0]
+    except:
+        logger.error('uhm...crap :)')
+    
+    
+    
+
+def get_github_auth_url(request):
+    context = {
+        'redirect_uri':request.build_absolute_uri(request.path),
+        'response_type':'code',
+        'scope':'repo,private_repo',
+        'client_id': CLIENT_ID
+    }
+    req = requests.Request('GET', AUTH_URL, params=context)
+    url = req.prepare().url
+    return url
