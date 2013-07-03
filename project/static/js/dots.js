@@ -16,27 +16,27 @@ $(function () {
         axisx.push($(this).text());
     });
     // Draw
-    var width = 800,
-        height = 300,
-        leftgutter = 30,
-        bottomgutter = 20,
+    var width = 1000,
+        height = 800,
+        leftgutter = 120,
+        bottomgutter = 50,
         r = Raphael("chart", width, height),
-        txt = {"font": '10px Fontin-Sans, Arial', stroke: "none", fill: "#fff"},
+        txt = {"font": '12px Arial', stroke: "none", fill: "#fff"},
         X = (width - leftgutter) / axisx.length,
         Y = (height - bottomgutter) / axisy.length,
         color = $("#chart").css("color");
         max = Math.round(X / 2) - 1;
     // r.rect(0, 0, width, height, 5).attr({fill: "#000", stroke: "none"});
     for (var i = 0, ii = axisx.length; i < ii; i++) {
-        r.text(leftgutter + X * (i + .5), 294, axisx[i]).attr(txt);
+        r.text(leftgutter + X * (i + .5), height - 20, axisx[i]).attr(txt);
     }
     for (var i = 0, ii = axisy.length; i < ii; i++) {
-        r.text(10, Y * (i + .5), axisy[i]).attr(txt);
+        r.text(80, Y * (i + .5), axisy[i]).attr(txt);
     }
     var o = 0;
     for (var i = 0, ii = axisy.length; i < ii; i++) {
         for (var j = 0, jj = axisx.length; j < jj; j++) {
-            var R = data[o] && Math.min(Math.round(Math.sqrt(data[o] / Math.PI) * 4), max);
+            var R = data[o] && Math.min(Math.round(Math.sqrt(data[o] / Math.PI) ), max);
             if (R) {
                 (function (dx, dy, R, value) {
                     var color = "hsb(" + [(1 - R / max) * .5, 1, .75] + ")";
