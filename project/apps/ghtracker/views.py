@@ -39,8 +39,7 @@ class IndexView(View):
             all_days = set()
             for user in gh.users:
                 days = gh.users[user]
-                for day in days:
-                    all_days.add(day)
+                map(all_days.add,days)
             context['all_days'] = sorted(all_days)
         elif code:
             github_authorize(request, code)
